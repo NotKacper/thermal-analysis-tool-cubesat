@@ -10,8 +10,6 @@ from Matrices.TemperatureMatrix import TemperatureMatrix
 # NOTES:
 # possible bug in Heat Flux Matrix staying a zero matrix => Top Priority
 
-
-
 # CONSTANTS
 HEAT_FLUX_FROM_SUN = 1414  # for hot scenarios it is 1414, for cold scenarios use 1322
 # this can be chosen to be anything, chosen as 400 by the .pdf
