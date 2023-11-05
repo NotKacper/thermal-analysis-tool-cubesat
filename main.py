@@ -7,9 +7,6 @@ from Matrices.ViewFactorMatrix import ViewFactorMatrix
 from Matrices.HeatFluxMatrix import HeatFluxMatrix
 from Matrices.TemperatureMatrix import TemperatureMatrix
 
-# NOTES:
-# possible bug in Heat Flux Matrix staying a zero matrix => Top Priority
-
 # CONSTANTS
 HEAT_FLUX_FROM_SUN = 1414  # for hot scenarios it is 1414, for cold scenarios use 1322
 # this can be chosen to be anything, chosen as 400 by the .pdf
@@ -19,15 +16,20 @@ ALTITUDE = 408  # km
 DELTA_TIME = 0.1  # S
 ORBITAL_PERIOD = 100000  # S, find out the orbital period (this is moot for most of the simulation anyway)
 SPECIFIC_HEAT_CAPACITY = 900 # Joules per kg per degree kelvin
-MASS = 12 #kg
+MASS = 12 # kg (default is 12 which is the standard for 6U cubesats)
+
 # Dimensions of cubesat (default is 6U CubeSat dimensions)
 WIDTH = 0.2 # metres
 LENGTH = 0.3405 # metres
 HEIGHT = 0.1 # metres
 INITIAL_TEMPERATURE = 273.15 # kelvin
-INTERNAL_HEAT_FLUX = 0  # Watts per metre squared, 
-                        # this is the heat flux that the electronic components of the cubesat will be producing
 
+# INTERNAL HEAT FLUX:
+# this is the heat flux that the electronic components of the cubesat will be producing
+# assumed to be the heat flux experienced by each node (not total heat flux)
+# likely an average which is assumed to be constant.
+INTERNAL_HEAT_FLUX = 0  # Watts per metre squared, 
+                        
 
 # logical class which will be implemented with a GUI eventually
 # contains all maths that goes on to implement the simulation

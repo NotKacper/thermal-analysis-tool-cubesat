@@ -42,14 +42,14 @@ class HeatFluxMatrix:
 
     def update_heat_transfer(self, variables, view_factors_matrix, areas, temp_matrix, absorption, emissivity_matrix):
         self.matrix[0][0] = self._get_heat_flow_general(
-            0, 0, variables, view_factors_matrix, areas, temp_matrix, absorption, emissivity_matrix)
+            0, 0, variables, view_factors_matrix, areas, temp_matrix, absorption, emissivity_matrix) + variables["internal_heat_flux"]
         self.matrix[0][1] = self._get_heat_flow_south(
-            variables, areas, temp_matrix, emissivity_matrix)
+            variables, areas, temp_matrix, emissivity_matrix)  + variables["internal_heat_flux"]
         self.matrix[1][0] = self._get_heat_flow_general(
-            1, 0, variables, view_factors_matrix, areas, temp_matrix, absorption, emissivity_matrix)
+            1, 0, variables, view_factors_matrix, areas, temp_matrix, absorption, emissivity_matrix)  + variables["internal_heat_flux"]
         self.matrix[1][1] = self._get_heat_flow_general(
-            1, 1, variables, view_factors_matrix, areas, temp_matrix, absorption, emissivity_matrix)
+            1, 1, variables, view_factors_matrix, areas, temp_matrix, absorption, emissivity_matrix)  + variables["internal_heat_flux"]
         self.matrix[2][0] = self._get_heat_flow_general(
-            2, 0, variables, view_factors_matrix, areas, temp_matrix, absorption, emissivity_matrix)
+            2, 0, variables, view_factors_matrix, areas, temp_matrix, absorption, emissivity_matrix) + variables["internal_heat_flux"]
         self.matrix[2][1] = self._get_heat_flow_nadir(
-            variables, view_factors_matrix[2][1], areas, temp_matrix, absorption, emissivity_matrix)
+            variables, view_factors_matrix[2][1], areas, temp_matrix, absorption, emissivity_matrix) + variables["internal_heat_flux"]
