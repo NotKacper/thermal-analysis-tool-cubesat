@@ -12,9 +12,11 @@ HEAT_FLUX_FROM_SUN = 1414  # for hot scenarios it is 1414, for cold scenarios us
 # this can be chosen to be anything, chosen as 400 by the .pdf
 CONTACT_CONDUCTANCE_COEFFICIENT = 400 # Watts per metre squared per kelvin
 RADIUS_EARTH = 6371  # km
-ALTITUDE = 408  # km
-DELTA_TIME = 0.1  # S
-ORBITAL_PERIOD = 100000  # S, find out the orbital period (this is moot for most of the simulation anyway)
+ALTITUDE = 500  # km (typically 350 - 700km)
+# DELTA_TIME
+#  must satisfy condition: sum of change in temperatue from next iteration is less than or equal to 1.
+DELTA_TIME = 0.1  # s
+ORBITAL_PERIOD = 100000  # s, find out the orbital period (this is moot for most of the simulation anyway)
 SPECIFIC_HEAT_CAPACITY = 900 # Joules per kg per degree kelvin
 MASS = 12 # kg (default is 12 which is the standard for 6U cubesats)
 
