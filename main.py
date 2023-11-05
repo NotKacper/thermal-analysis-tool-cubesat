@@ -20,6 +20,10 @@ DELTA_TIME = 0.1  # S
 ORBITAL_PERIOD = 100000  # S
 SPECIFIC_HEAT_CAPACITY = 900 # 
 MASS = 4 #kg
+# Dimensions of cubesat (default is 6U CubeSat dimensions)
+WIDTH = 0.2
+LENGTH = 0.3405
+HEIGHT = 0.1
 
 # logical class which will be implemented with a GUI eventually
 # contains all maths that goes on to implement the simulation
@@ -30,7 +34,7 @@ class ThermalSimulation:
         # [[north, south],[v+,v-],[nadir,zenith]] for each matrix
         self.view_factors = ViewFactorMatrix([[0,0],[0,0],[0,0]])
         self.heat_flux = HeatFluxMatrix([[0,0],[0,0],[0,0]])
-        self.area_matrix = [[2, 2], [2, 2], [2, 2]]
+        self.areas = [LENGTH*HEIGHT, WIDTH*LENGTH, WIDTH*HEIGHT]
         self.temperatures = TemperatureMatrix([[273.15,273.15],[273.15,273.15],[273.15,273.15]])
         self.absorption = 0.95
         self.emissivity_matrix = [[0.85, 0.85], [0.85, 0.85], [0.85, 0.85]]
@@ -64,7 +68,7 @@ class ThermalSimulation:
         self.variables["time"] += DELTA_TIME
         self.view_factors.update_factors(self.variables)
         self.heat_flux.update_heat_transfer(
-            self.variables, self.view_factors.matrix, self.area_matrix, self.temperatures.matrix, self.absorption, self.emissivity_matrix)
+            self.variables, self.view_factors.matrix, self.areas, self.temperatures.matrix, self.absorption, self.emissivity_matrix)
         self.temperatures.update_matrix(MASS, SPECIFIC_HEAT_CAPACITY, self.heat_flux.matrix, DELTA_TIME)
         self.outputStateOfMatrices()
         
