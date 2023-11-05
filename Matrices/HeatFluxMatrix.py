@@ -11,7 +11,7 @@ class HeatFluxMatrix:
             for j in range(len(self.matrix[i])):
                 if i != row:
                     sum += areas[i] * \
-                        (temp_matrix[i]-temp_matrix[row][column])
+                        (temp_matrix[i][j]-temp_matrix[row][column])
         return sum
 
     def _get_heat_flow_general(self, row, column, variables, view_factors_matrix, areas, temp_matrix, absorption, emissivity_matrix):
