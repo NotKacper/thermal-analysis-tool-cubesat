@@ -12,14 +12,24 @@ CONSTANTS = {}
 with open('constants.json') as file:
     CONSTANTS = json.load(file)
 
-# BETA_ANGLE
+# initial beta angle parameter
 BETA_ANGLE = np.pi/2
 
 CONSTANTS["beta_angle"] = BETA_ANGLE
 
 
+def getIterationsFromUser():
+    try:
+        iterations = int(input(
+            "for how many iterations would you like to simulate this scenario? (integer input)"))
+    except:
+        iterations = getIterationsFromUser()
+    return iterations
+
+
+iterations = getIterationsFromUser()
 sim = ThermalSimulation(CONSTANTS)
-dataPoints = sim.simulate(10000)
+dataPoints = sim.simulate(iterations)
 
 # writes all data outputted in .csv file - rawdata
 with open('output.csv', 'w', newline='') as file:
