@@ -17,8 +17,7 @@ class ThermalSimulation:
         self.heat_flux = HeatFluxMatrix([[0, 0], [0, 0], [0, 0]])
         self.areas = [constants["length"]*constants["height"], constants["width"]
                       * constants["length"], constants["width"]*constants["height"]]
-        self.temperatures = TemperatureMatrix([[constants["initial_temperature"], constants["initial_temperature"]], [
-                                              constants["initial_temperature"], constants["initial_temperature"]], [constants["initial_temperature"], constants["initial_temperature"]]])
+        self.temperatures = TemperatureMatrix(constants["initial_temperature"])
         self.absorption = constants["absorption"]
         self.emissivity_matrix = [[constants["emissivity"], constants["emissivity"]], [
             constants["emissivity"], constants["emissivity"]], [constants["emissivity"], constants["emissivity"]]]
@@ -75,8 +74,9 @@ class ThermalSimulation:
         return {"time": self.variables["time"], "beta_angle": self.variables["beta_angle"], "average_temperature": self.temperatures.getAverageTemperature()}
 
     def simulate(self, iterations: int) -> dict[str, list[float]]:
-        dataPoints = {"time": [], "beta_angle": [], "average_temperature": []}
+        dataPoints = {"time": [self.variables["time"]], "beta_angle": [self.variables["beta_angle"]], "average_temperature": [self.variables["initial_temperature"]]}
         for i in range(iterations):
+            print(f"Iteration {i + 1}")
             newData = self.update()
             dataPoints["time"].append(newData["time"])
             dataPoints["beta_angle"].append(newData["beta_angle"])

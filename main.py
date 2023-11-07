@@ -21,13 +21,14 @@ CONSTANTS["beta_angle"] = BETA_ANGLE
 def getIterationsFromUser():
     try:
         iterations = int(input(
-            "for how many iterations would you like to simulate this scenario? (integer input)"))
+            "for how many iterations would you like to simulate this scenario? (integer input) "))
     except:
+        print("Error: Non-integer provided, please try again")
         iterations = getIterationsFromUser()
     return iterations
 
-
 iterations = getIterationsFromUser()
+print("Note: To interrupt the simulation at any time press CRTL + C OR CMD + C, however results will not be created")
 sim = ThermalSimulation(CONSTANTS)
 dataPoints = sim.simulate(iterations)
 

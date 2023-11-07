@@ -1,6 +1,6 @@
 class TemperatureMatrix:
-    def __init__(self, matrix: list[list]):
-        self.matrix = matrix
+    def __init__(self, initial_temperature : float):
+        self.matrix = [[initial_temperature, initial_temperature] for i in range(3)]
 
     def update_matrix(self, mass: float, specific_heat_capacity: float, heat_flow_matrix: list[list[float]], delta_time: float) -> None:
         for i in range(len(self.matrix)):
