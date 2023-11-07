@@ -24,23 +24,10 @@ class ThermalSimulation:
         self.increasingBeta = False
         self.delta_time = constants["delta_time"]
         self.mass = constants["mass"]
-        # beta angle will be varied through [-90, +90] (degrees), [-pi/2, +pi/2]
+        # beta angle will be varied through [-90, +90] (degrees)
         self.variables = constants
         self.variables.update({"time": 0, "critical_beta": np.arcsin(constants["radius_earth"]/(
             constants["radius_earth"] + constants["altitude"])), "albedo": 0, "heat_flux_ir": 0})
-
-    def vary_beta_angle(self) -> None:
-        # increases beta angle by PI / 12 after one complete simulation
-        if (self.increasingBeta):
-            self.variables["beta_angle"] += np.pi/12
-        else:
-            self.variables["beta_angle"] -= np.pi/12
-        # if the beta angle becomes greater than PI / 2 then the angle should decrease
-        if (self.variables["beta_angle"] > np.pi/2):
-            self.increasingBeta = False
-         # if the beta angle becomes less than -PI / 2 then the angle should increase
-        if (self.variables["beta_angle"] < -np.pi/2):
-            self.increasingBeta = True
 
     def update_heat_flux_ir(self) -> None:
         if self.variables["beta_angle"] < (np.pi/6):
@@ -75,12 +62,15 @@ class ThermalSimulation:
 
     def simulate(self, iterations: int) -> dict[str, list[float]]:
         dataPoints = {"time": [self.variables["time"]], "beta_angle": [self.variables["beta_angle"]], "average_temperature": [self.variables["initial_temperature"]]}
+        print()
         for i in range(iterations):
+            print ("\033[A                             \033[A")
             print(f"Iteration {i + 1}")
             newData = self.update()
             dataPoints["time"].append(newData["time"])
             dataPoints["beta_angle"].append(newData["beta_angle"])
             dataPoints["average_temperature"].append(
                 newData["average_temperature"])
+        print ("\033[A                             \033[A")
         print("Simulation complete : raw data available in output.csv")
         return dataPoints

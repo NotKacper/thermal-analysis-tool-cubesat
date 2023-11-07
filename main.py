@@ -4,18 +4,12 @@
 
 import csv
 from ThermalSimulation import ThermalSimulation
-import numpy as np
 import json
 
 CONSTANTS = {}
 
 with open('constants.json') as file:
     CONSTANTS = json.load(file)
-
-# initial beta angle parameter
-BETA_ANGLE = np.pi/2
-
-CONSTANTS["beta_angle"] = BETA_ANGLE
 
 
 def getIterationsFromUser():
@@ -26,6 +20,7 @@ def getIterationsFromUser():
         print("Error: Non-integer provided, please try again")
         iterations = getIterationsFromUser()
     return iterations
+
 
 iterations = getIterationsFromUser()
 print("Note: To interrupt the simulation at any time press CRTL + C OR CMD + C, however results will not be created")
