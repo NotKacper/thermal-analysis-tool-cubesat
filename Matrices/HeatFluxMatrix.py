@@ -2,8 +2,8 @@ import numpy as np
 
 
 class HeatFluxMatrix:
-    def __init__(self, matrix: list[list[float]]):
-        self.matrix = matrix
+    def __init__(self):
+        self.matrix = [[0.0, 0.0], [0.0, 0.0], [0.0, 0.0]]
 
     def find_summation(self, row: int, column: int, areas: list[float], temp_matrix: list[list[float]]):
         sum = 0

@@ -13,8 +13,8 @@ import numpy as np
 class ThermalSimulation:
     def __init__(self, constants: dict):
         # [[north, south],[v+,v-],[nadir,zenith]] for each matrix
-        self.view_factors = ViewFactorMatrix([[0, 0], [0, 0], [0, 0]])
-        self.heat_flux = HeatFluxMatrix([[0, 0], [0, 0], [0, 0]])
+        self.view_factors = ViewFactorMatrix()
+        self.heat_flux = HeatFluxMatrix()
         self.areas = [constants["length"]*constants["height"], constants["width"]
                       * constants["length"], constants["width"]*constants["height"]]
         self.temperatures = TemperatureMatrix(constants["initial_temperature"])

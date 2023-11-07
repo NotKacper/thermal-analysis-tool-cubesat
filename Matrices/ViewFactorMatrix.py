@@ -2,8 +2,8 @@ import numpy as np
 
 
 class ViewFactorMatrix:
-    def __init__(self, matrix: list[list]):
-        self.matrix = matrix
+    def __init__(self):
+        self.matrix = [[0.0, 0.0], [0.0, 0.0], [0.0, 0.0]]
 
     def _find_eclipse_fraction(self, variables: dict[str, float]) -> float:
         if abs(variables["beta_angle"]) < variables["critical_beta"]:
