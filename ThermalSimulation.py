@@ -27,7 +27,7 @@ class ThermalSimulation:
         # beta angle will be varied through [-90, +90] (degrees)
         self.variables = constants
         self.variables.update({"time": 0, "critical_beta": np.arcsin(constants["radius_earth"]/(
-            constants["radius_earth"] + constants["altitude"])), "albedo": 0, "heat_flux_ir": 0})
+            constants["radius_earth"] + constants["altitude"])), "albedo": 0, "heat_flux_ir": 0, "beta_angle": -90})
 
     def update_heat_flux_ir(self) -> None:
         if self.variables["beta_angle"] < (np.pi/6):
@@ -68,14 +68,16 @@ class ThermalSimulation:
     def simulate(self, iterations: int) -> dict[str, list[float]]:
         dataPoints = {"time": [self.variables["time"]], "beta_angle": [self.variables["beta_angle"]], "average_temperature": [self.convertTemperatureUnits(self.variables["initial_temperature"])]}
         print()
-        for i in range(iterations):
-            print ("\033[A                             \033[A")
-            print(f"Iteration {i + 1}")
-            newData = self.update()
-            dataPoints["time"].append(newData["time"])
-            dataPoints["beta_angle"].append(newData["beta_angle"])
-            dataPoints["average_temperature"].append(
-                self.convertTemperatureUnits(newData["average_temperature"]))
-        print ("\033[A                             \033[A")
+        for j in range(180):
+            self.variables["beta_angle"]+=1
+            for i in range(iterations):
+                print ("\033[A                              \033[A")
+                print(f"Iteration {i + 1}, beta angle: {1+j-90}")
+                newData = self.update()
+                dataPoints["time"].append(newData["time"])
+                dataPoints["beta_angle"].append(newData["beta_angle"])
+                dataPoints["average_temperature"].append(
+                    self.convertTemperatureUnits(newData["average_temperature"]))
+        print ("\033[A                                 \033[A")
         print("Simulation complete : raw data available in output.csv")
         return dataPoints
