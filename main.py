@@ -46,7 +46,7 @@ EMISSIVITIY = 0.85
 
 sim = ThermalSimulation(ABSORPTION, ALTITUDE, BETA_ANGLE, CONTACT_CONDUCTANCE_COEFFICIENT, DELTA_TIME, EMISSIVITIY, HEAT_FLUX_FROM_SUN,
                         HEIGHT, INITIAL_TEMPERATURE, INTERNAL_HEAT_FLUX, LENGTH, MASS, ORBITAL_PERIOD, RADIUS_EARTH, SPECIFIC_HEAT_CAPACITY, WIDTH)
-dataPoints = sim.simulate(1000000)
+dataPoints = sim.simulate(10000)
 
 # writes all data outputted in .csv file - rawdata
 with open('output.csv', 'w', newline='') as file:
