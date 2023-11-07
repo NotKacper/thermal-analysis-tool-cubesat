@@ -7,7 +7,7 @@ class ViewFactorMatrix:
 
     def _find_eclipse_fraction(self, variables: dict[str, float]) -> float:
         if abs(variables["beta_angle"]) < variables["critical_beta"]:
-            return 1/np.pi * np.arccos(np.sqrt(variables["altitude"]**2 + 2 * variables["radius"] * variables["altitude"])/(variables["altitude"] + variables["radius"] * np.cos(variables["beta_angle"])))
+            return 1/np.pi * np.arccos(np.sqrt(variables["altitude"]**2 + 2 * variables["radius_earth"] * variables["altitude"])/(variables["altitude"] + variables["radius_earth"] * np.cos(variables["beta_angle"])))
         return 0
 
     # determines the view factor of the north and south sides of the CubeSat

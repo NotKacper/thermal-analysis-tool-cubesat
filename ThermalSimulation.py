@@ -11,24 +11,24 @@ import numpy as np
 
 
 class ThermalSimulation:
-    def __init__(self, ABSORPTION: float, ALTITUDE: float, BETA_ANGLE: float, CONTACT_CONDUCTANCE_COEFFICIENT: float, DELTA_TIME: float, EMISSIVITIY: float, HEAT_FLUX_FROM_SUN: float, HEIGHT: float, INITIAL_TEMPERATURE: float, INTERNAL_HEAT_FLUX: float, LENGTH: float, MASS: float, ORBITAL_PERIOD: float, RADIUS_EARTH: float, SPECIFIC_HEAT_CAPACITY: float, WIDTH: float):
+    def __init__(self, constants: dict):
         # [[north, south],[v+,v-],[nadir,zenith]] for each matrix
         self.view_factors = ViewFactorMatrix([[0, 0], [0, 0], [0, 0]])
         self.heat_flux = HeatFluxMatrix([[0, 0], [0, 0], [0, 0]])
-        self.areas = [LENGTH*HEIGHT, WIDTH*LENGTH, WIDTH*HEIGHT]
-        self.temperatures = TemperatureMatrix([[INITIAL_TEMPERATURE, INITIAL_TEMPERATURE], [
-                                              INITIAL_TEMPERATURE, INITIAL_TEMPERATURE], [INITIAL_TEMPERATURE, INITIAL_TEMPERATURE]])
-        self.absorption = ABSORPTION
-        self.emissivity_matrix = [[EMISSIVITIY, EMISSIVITIY], [
-            EMISSIVITIY, EMISSIVITIY], [EMISSIVITIY, EMISSIVITIY]]
+        self.areas = [constants["length"]*constants["height"], constants["width"]
+                      * constants["length"], constants["width"]*constants["height"]]
+        self.temperatures = TemperatureMatrix([[constants["initial_temperature"], constants["initial_temperature"]], [
+                                              constants["initial_temperature"], constants["initial_temperature"]], [constants["initial_temperature"], constants["initial_temperature"]]])
+        self.absorption = constants["absorption"]
+        self.emissivity_matrix = [[constants["emissivity"], constants["emissivity"]], [
+            constants["emissivity"], constants["emissivity"]], [constants["emissivity"], constants["emissivity"]]]
         self.increasingBeta = False
-        self.delta_time = DELTA_TIME
-        self.mass = MASS
+        self.delta_time = constants["delta_time"]
+        self.mass = constants["mass"]
         # beta angle will be varied through [-90, +90] (degrees), [-pi/2, +pi/2]
-        self.variables = {"time": 0, "beta_angle": BETA_ANGLE, "critical_beta": np.arcsin(RADIUS_EARTH/(RADIUS_EARTH + ALTITUDE)),
-                          "altitude": ALTITUDE, "orbital_period": ORBITAL_PERIOD, "radius": RADIUS_EARTH, "albedo": 0,
-                          "heat_flux_sun": HEAT_FLUX_FROM_SUN, "contact_conductance_coefficient": CONTACT_CONDUCTANCE_COEFFICIENT,
-                          "heat_flux_ir": 0, "stefan_boltzmann": 5.670374419e-8, "internal_heat_flux": INTERNAL_HEAT_FLUX, "specific_heat_capacity": SPECIFIC_HEAT_CAPACITY}
+        self.variables = constants
+        self.variables.update({"time": 0, "critical_beta": np.arcsin(constants["radius_earth"]/(
+            constants["radius_earth"] + constants["altitude"])), "albedo": 0, "heat_flux_ir": 0})
 
     def vary_beta_angle(self) -> None:
         # increases beta angle by PI / 12 after one complete simulation
@@ -65,16 +65,16 @@ class ThermalSimulation:
     def update(self) -> dict:
         self.updateAlbedo()
         self.update_heat_flux_ir()
-        self.variables["time"] += self.delta_time
         self.view_factors.update_factors(self.variables)
         self.heat_flux.update_heat_transfer(
             self.variables, self.view_factors.matrix, self.areas, self.temperatures.matrix, self.absorption, self.emissivity_matrix)
         self.temperatures.update_matrix(
             self.mass, self.variables["specific_heat_capacity"], self.heat_flux.matrix, self.delta_time)
+        self.variables["time"] += self.delta_time
         # self.outputStateOfMatrices()
         return {"time": self.variables["time"], "beta_angle": self.variables["beta_angle"], "average_temperature": self.temperatures.getAverageTemperature()}
 
-    def simulate(self, iterations : int) -> dict[str, list[float]]:
+    def simulate(self, iterations: int) -> dict[str, list[float]]:
         dataPoints = {"time": [], "beta_angle": [], "average_temperature": []}
         for i in range(iterations):
             newData = self.update()
