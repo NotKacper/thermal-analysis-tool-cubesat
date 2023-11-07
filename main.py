@@ -30,10 +30,14 @@ INITIAL_TEMPERATURE = 273.15 # kelvin
 # this is the heat flux that the electronic components of the cubesat will be producing
 # assumed to be the heat flux experienced by each node (not total heat flux)
 # likely an average which is assumed to be constant.
-INTERNAL_HEAT_FLUX = 0  # Watts per metre squared, #
+INTERNAL_HEAT_FLUX = 0  # Watts per metre squared
 
 # BETA_ANGLE
 BETA_ANGLE = np.pi/6
+
+# The characteristics of the material used to create the 6U CubeSat (Assumed as Aluminum)
+ABSORPTION = 0.95
+EMISSIVITIY = 0.85
                         
 
 # logical class which will be implemented with a GUI eventually
@@ -47,8 +51,8 @@ class ThermalSimulation:
         self.heat_flux = HeatFluxMatrix([[0,0],[0,0],[0,0]])
         self.areas = [LENGTH*HEIGHT, WIDTH*LENGTH, WIDTH*HEIGHT]
         self.temperatures = TemperatureMatrix([[INITIAL_TEMPERATURE,INITIAL_TEMPERATURE],[INITIAL_TEMPERATURE,INITIAL_TEMPERATURE],[INITIAL_TEMPERATURE,INITIAL_TEMPERATURE]])
-        self.absorption = 0.95
-        self.emissivity_matrix = [[0.85, 0.85], [0.85, 0.85], [0.85, 0.85]]
+        self.absorption = ABSORPTION
+        self.emissivity_matrix = [[EMISSIVITIY, EMISSIVITIY], [EMISSIVITIY, EMISSIVITIY], [EMISSIVITIY, EMISSIVITIY]]
         # beta angle will be varied through [-90, +90] (degrees), [-pi/2, +pi/2]
         self.variables = {"time": 0, "beta_angle": BETA_ANGLE, "critical_beta": np.arcsin(RADIUS_EARTH/(RADIUS_EARTH + ALTITUDE)),
                           "altitude": ALTITUDE, "orbital_period": ORBITAL_PERIOD, "radius": RADIUS_EARTH, "albedo": 0,
