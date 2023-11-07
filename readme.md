@@ -2,8 +2,8 @@
 Python-based tool using numerical ODE solving, basic matrix operations and pre-designed physical formulae to model the thermal operations of the Artemis<sup>3</sup> - 1 CubeSat probe.
 # Ready for use
 ## How to use
-1. Open main.py and modify the different constants of the simulation to your liking
-2. Either execute run.bat or main.py
+1. Open constants.json and modify the different constants of the simulation to your liking
+2. Run main.py
 3. Using RStudio set working directory to this repository location.
 4. now run thermal_model_plot.r using RStudio to produce a graph visualising the results (gets data from output.csv).
 ## Additional features to add
