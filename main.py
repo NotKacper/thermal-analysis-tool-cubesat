@@ -46,14 +46,12 @@ EMISSIVITIY = 0.85
 
 sim = ThermalSimulation(ABSORPTION, ALTITUDE, BETA_ANGLE, CONTACT_CONDUCTANCE_COEFFICIENT, DELTA_TIME, EMISSIVITIY, HEAT_FLUX_FROM_SUN,
                         HEIGHT, INITIAL_TEMPERATURE, INTERNAL_HEAT_FLUX, LENGTH, MASS, ORBITAL_PERIOD, RADIUS_EARTH, SPECIFIC_HEAT_CAPACITY, WIDTH)
-dataPoints = sim.simulate()
-print(dataPoints["time"])
-print(dataPoints["average_temperature"])
-print(dataPoints["beta_angle"])
+dataPoints = sim.simulate(1000000)
 
 # writes all data outputted in .csv file - rawdata
 with open('output.csv', 'w', newline='') as file:
     writer = csv.writer(file)
     writer.writerow(["time", "beta_angle", "average_temperature"])
     for i in range(len(dataPoints["time"])):
-        writer.writerow([str(dataPoints["time"][i]), str(dataPoints["beta_angle"][i]), str(dataPoints["average_temperature"][i])])
+        writer.writerow([str(dataPoints["time"][i]), str(
+            dataPoints["beta_angle"][i]), str(dataPoints["average_temperature"][i])])

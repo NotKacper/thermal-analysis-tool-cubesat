@@ -5,7 +5,7 @@ class HeatFluxMatrix:
     def __init__(self, matrix: list[list[float]]):
         self.matrix = matrix
 
-    def find_summation(self, row : int, column : int, areas : list[float], temp_matrix : list[list[float]]):
+    def find_summation(self, row: int, column: int, areas: list[float], temp_matrix: list[list[float]]):
         sum = 0
         for i in range(len(self.matrix)):
             for j in range(len(self.matrix[i])):
@@ -33,14 +33,14 @@ class HeatFluxMatrix:
             temp_matrix[2][1]**4*emissivity_matrix[2][1]
         return part1+part2-part3
 
-    def _get_heat_flow_south(self, variables : dict[str, float], areas : list[float], temp_matrix: list[list[float]], emissivity_matrix: list[list[float]]) -> float:
+    def _get_heat_flow_south(self, variables: dict[str, float], areas: list[float], temp_matrix: list[list[float]], emissivity_matrix: list[list[float]]) -> float:
         part1 = variables["contact_conductance_coefficient"] * \
             self.find_summation(0, 1, areas, temp_matrix)
         part2 = variables["stefan_boltzmann"]*areas[0] * \
             temp_matrix[0][1]**4*emissivity_matrix[0][1]
         return part1 - part2
 
-    def update_heat_transfer(self, variables : dict[str, float], view_factors_matrix : list[list[float]], areas : list[float], temp_matrix : list[list[float]], absorption : float, emissivity_matrix : list[list[float]]) -> None:
+    def update_heat_transfer(self, variables: dict[str, float], view_factors_matrix: list[list[float]], areas: list[float], temp_matrix: list[list[float]], absorption: float, emissivity_matrix: list[list[float]]) -> None:
         self.matrix[0][0] = self._get_heat_flow_general(
             0, 0, variables, view_factors_matrix, areas, temp_matrix, absorption, emissivity_matrix) + variables["internal_heat_flux"]
         self.matrix[0][1] = self._get_heat_flow_south(

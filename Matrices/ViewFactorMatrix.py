@@ -2,41 +2,41 @@ import numpy as np
 
 
 class ViewFactorMatrix:
-    def __init__(self, matrix : list[list]):
+    def __init__(self, matrix: list[list]):
         self.matrix = matrix
 
-    def _find_eclipse_fraction(self, variables : dict[str, float]) -> float:
+    def _find_eclipse_fraction(self, variables: dict[str, float]) -> float:
         if abs(variables["beta_angle"]) < variables["critical_beta"]:
             return 1/np.pi * np.arccos(np.sqrt(variables["altitude"]**2 + 2 * variables["radius"] * variables["altitude"])/(variables["altitude"] + variables["radius"] * np.cos(variables["beta_angle"])))
         return 0
 
     # determines the view factor of the north and south sides of the CubeSat
-    def _find_view_factor_NS(self, eclipse_fraction : float, variables : dict[str, float]) -> float:
+    def _find_view_factor_NS(self, eclipse_fraction: float, variables: dict[str, float]) -> float:
         if ((variables["orbital_period"] / 2) * (1 - eclipse_fraction) > variables["time"]) and ((variables["orbital_period"] / 2) * (1 + eclipse_fraction) < variables["time"]):
             return np.sin(variables["beta_angle"])
         return 0
 
-    def _find_view_factor_v_pos(self, sin_value : float, cos_beta : float, eclipse_fraction : float, variables : dict[str, float]) -> float:
+    def _find_view_factor_v_pos(self, sin_value: float, cos_beta: float, eclipse_fraction: float, variables: dict[str, float]) -> float:
         if (variables["time"] > (variables["orbital_period"] / 2) * (1 + eclipse_fraction)):
             return -sin_value*cos_beta
         return 0
 
-    def _find_view_factor_v_neg(self, sin_value : float, cos_beta : float, eclipse_fraction : float, variables : dict[str, float]) -> float:
+    def _find_view_factor_v_neg(self, sin_value: float, cos_beta: float, eclipse_fraction: float, variables: dict[str, float]) -> float:
         if (variables["time"] > (variables["orbital_period"] / 2) * (1 - eclipse_fraction)):
             return sin_value*cos_beta
         return 0
 
-    def _find_view_factor_nadir(self, cos_value : float, cos_beta : float, eclipse_fraction : float, variables : dict[str, float]) -> float:
+    def _find_view_factor_nadir(self, cos_value: float, cos_beta: float, eclipse_fraction: float, variables: dict[str, float]) -> float:
         if (variables["orbital_period"] / 4 < variables["time"] and variables["orbital_period"] / 2 * (1 - eclipse_fraction)) or (variables["orbital_period"] / 2 * (1 + eclipse_fraction) < variables["time"] and variables["time"] < 3 * np.pi / 4):
             return -cos_value * cos_beta
         return 0
 
-    def _find_view_factor_zenith(self, cos_value : float, cos_beta : float, variables : dict[str, float]) -> float:
+    def _find_view_factor_zenith(self, cos_value: float, cos_beta: float, variables: dict[str, float]) -> float:
         if (variables["orbital_period"] / 4 > variables["time"]) and (variables["time"] > 3 * variables["orbital_period"] / 4):
             return cos_value*cos_beta
         return 0
 
-    def update_factors(self, variables : dict[str, float]) -> None:
+    def update_factors(self, variables: dict[str, float]) -> None:
         # finding the reused values
         cos_beta = np.cos(variables["beta_angle"])
         eclipse_fraction = self._find_eclipse_fraction(variables)

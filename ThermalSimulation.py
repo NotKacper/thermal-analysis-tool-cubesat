@@ -74,12 +74,13 @@ class ThermalSimulation:
         # self.outputStateOfMatrices()
         return {"time": self.variables["time"], "beta_angle": self.variables["beta_angle"], "average_temperature": self.temperatures.getAverageTemperature()}
 
-    def simulate(self) -> dict[str, list[float]]:
+    def simulate(self, iterations : int) -> dict[str, list[float]]:
         dataPoints = {"time": [], "beta_angle": [], "average_temperature": []}
-        for i in range(10000):
+        for i in range(iterations):
             newData = self.update()
             dataPoints["time"].append(newData["time"])
             dataPoints["beta_angle"].append(newData["beta_angle"])
             dataPoints["average_temperature"].append(
                 newData["average_temperature"])
+        print("Simulation complete : raw data available in output.csv")
         return dataPoints
