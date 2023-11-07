@@ -15,5 +15,6 @@
     "absorption": 0.95,
     "emissivity": 0.85,
     "stefan_boltzmann": 5.670374419e-8,
-    "beta_angle" : -90
+    "beta_angle" : -90,
+    "temperature_unit": "k"
 }

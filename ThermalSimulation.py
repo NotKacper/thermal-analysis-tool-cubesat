@@ -59,9 +59,14 @@ class ThermalSimulation:
         self.variables["time"] += self.delta_time
         # self.outputStateOfMatrices()
         return {"time": self.variables["time"], "beta_angle": self.variables["beta_angle"], "average_temperature": self.temperatures.getAverageTemperature()}
+    
+    def convertTemperatureUnits(self, temperature : float) -> float:
+        if (self.variables["temperature_unit"].lower() == "c"):
+            return temperature - 273.15
+        return temperature
 
     def simulate(self, iterations: int) -> dict[str, list[float]]:
-        dataPoints = {"time": [self.variables["time"]], "beta_angle": [self.variables["beta_angle"]], "average_temperature": [self.variables["initial_temperature"]]}
+        dataPoints = {"time": [self.variables["time"]], "beta_angle": [self.variables["beta_angle"]], "average_temperature": [self.convertTemperatureUnits(self.variables["initial_temperature"])]}
         print()
         for i in range(iterations):
             print ("\033[A                             \033[A")
@@ -70,7 +75,7 @@ class ThermalSimulation:
             dataPoints["time"].append(newData["time"])
             dataPoints["beta_angle"].append(newData["beta_angle"])
             dataPoints["average_temperature"].append(
-                newData["average_temperature"])
+                self.convertTemperatureUnits(newData["average_temperature"]))
         print ("\033[A                             \033[A")
         print("Simulation complete : raw data available in output.csv")
         return dataPoints
